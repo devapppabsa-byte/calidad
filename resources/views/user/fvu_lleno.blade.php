@@ -8,7 +8,7 @@
 @endif
 
 {{-- boton de imprimir --}}
-<div class="container">
+<div class="container d-none  d-xl-block">
     <div class="row justify-content-center">
         <div class="col-12 text-center">
             <div class="btn-group">

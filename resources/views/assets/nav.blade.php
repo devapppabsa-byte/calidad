@@ -23,7 +23,7 @@
 <div class="offcanvas offcanvas-start bg-light" tabindex="-1" id="menuLateral" aria-labelledby="menuLateralLabel">
   <div class="offcanvas-header border-bottom">
     <h5 class="offcanvas-title" id="menuLateralLabel">
-      <i class="fa fa-flask me-2"></i> QualiTrackx
+      <i class="fa fa-flask me-2"></i> QualiTrack
     </h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
   </div>

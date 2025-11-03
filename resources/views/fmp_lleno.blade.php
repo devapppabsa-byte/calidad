@@ -8,7 +8,7 @@
 @endif
 
 {{-- boton de imprimir --}}
-<div class="container my-2">
+<div class="container my-2 d-none  d-xl-block">
   <div class="row px-0">
       <div class="col-12 text-center">
           <div class="btn-group">

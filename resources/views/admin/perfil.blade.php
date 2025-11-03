@@ -10,15 +10,15 @@
 
     <div class="row  justify-content-around mt-5">
 
-      <div class="col-10 col-md-8 col-lg-4 bg-white p-4 m-2 rounded-4 shadow-sm border">
+      <div class="col-10 col-md-8 col-lg-4 bg-white p-4 m-2 rounded-4 shadow-sm border" style="height: 300px">
         <canvas id="mas_pedidos"></canvas>
       </div>
 
-      <div class="col-10 col-md-8 col-lg-4 bg-white p-4 m-2 rounded-4 shadow-sm border">
+      <div class="col-10 col-md-8 col-lg-4 bg-white p-4 m-2 rounded-4 shadow-sm border" style="height: 300px">
         <canvas id="grafico_barras"></canvas>
       </div>
 
-      <div class="col-10 col-md-8 col-lg-4 bg-white p-4 m-2 rounded-4 shadow-sm border">
+      <div class="col-10 col-md-8 col-lg-4 bg-white p-4 m-2 rounded-4 shadow-sm border" style="height: 300px">
         <canvas id="grafico_lineas"></canvas>
       </div>
         
@@ -43,17 +43,17 @@
     type: 'bar',
     data: {
       labels: [
-        @forelse($proveedores as $proveedor)
-          '{{ $proveedor->proveedor }}',
+        @forelse($rechazados as $rechazado)
+          '{{ $rechazado->proveedor }}',
         @empty
           'Sin datos'
         @endforelse
       ],
       datasets: [{
-        label: 'Más entregas de Materia Prima',
+        label: 'Los mas rechazados',
         data: [
-          @forelse($proveedores as $proveedor)
-            {{ $proveedor->repeticiones }},
+          @forelse($rechazados as $rechazado)
+            {{ $rechazado->repeticiones }},
           @empty
             0
           @endforelse
@@ -81,11 +81,11 @@
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
       scales: {
         x: {
           title: {
             display: true,
-            text: 'Proveedores',
             font: { weight: 'bold' }
           },
           ticks: {
@@ -108,7 +108,7 @@
         },
         title: {
           display: true,
-          text: 'Proveedores con más Entregas',
+          text: 'Proveedores con más rechazos',
           font: { size: 18 }
         },
         tooltip: {
@@ -156,6 +156,7 @@
     options: {
       indexAxis: 'y', // 👉 barras horizontales
       responsive: true,
+      maintainAspectRatio: false,
       plugins: {
         legend: { position: 'top' },
         title: { display: true, text: 'Ranking de Proveedores (Barras Horizontales)' }
@@ -202,6 +203,7 @@ new Chart(ctx2, {
   },
   options: {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: { position: 'top' },
       title: { display: true, text: 'Tendencia de Entregas por Proveedor' }
