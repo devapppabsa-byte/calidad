@@ -1,0 +1,131 @@
+[33mcommit 6482adf19fba54cd0a4e2735c0719aab3b06be9e[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: Arturo Resendiz <resendiz.galleta@gmail.com>
+Date:   Mon Apr 15 17:40:20 2024 -0600
+
+    Falta consultar los productos, transportistas y proveedores en los formatos
+
+[33mcommit bd6f67b21a760726677c73d7419d9490b852794d[m
+Author: Arturo Resendiz <resendiz.galleta@gmail.com>
+Date:   Fri Apr 12 11:09:47 2024 -0600
+
+     falta el boton de imprimir los formatos
+
+[33mcommit ce6c8e1271c22fa66e24e1c41a2da77dab07a31a[m
+Author: Arturo Resendiz <resendiz.galleta@gmail.com>
+Date:   Thu Apr 11 22:03:41 2024 -0600
+
+    Perfil del almacen creado
+
+[33mcommit 6d5651cc7e3e1717c7f9e179108065c37c3f3db0[m
+Author: Arturo Resendiz <resendiz.galleta@gmail.com>
+Date:   Thu Apr 11 17:47:39 2024 -0600
+
+    empezando con la programacion del perfil del almacen
+
+[33mcommit 956e0e511cdc109b040df96fa0079810b0780ed6[m
+Author: Arturo Resendiz <resendiz.galleta@gmail.com>
+Date:   Thu Apr 11 13:21:14 2024 -0600
+
+    comienzan las pruebas
+
+[33mcommit 41aa14f7a7f8f12ea3717ca7a00e7192434e220e[m
+Author: Arturo Resendiz <resendiz.galleta@gmail.com>
+Date:   Wed Apr 10 13:49:11 2024 -0600
+
+    casi listo
+
+[33mcommit f04856af39e5ffe3843a62b3fc4c2afadb5deff5[m
+Author: Arturo Resendiz <resendiz.galleta@gmail.com>
+Date:   Mon Apr 8 17:37:31 2024 -0600
+
+    falta fvu
+
+[33mcommit 621aaa31c88c4cf912526cdadce3cc20cee211cf[m
+Author: Arturo Resendiz <resendiz.galleta@gmail.com>
+Date:   Sat Apr 6 13:45:42 2024 -0600
+
+    fpnc terminado, falta afinar detalles y completar la prog del fvu
+
+[33mcommit 8653df3a4312c95a2c925c812510a51c87904689[m
+Author: Arturo Resendiz <resendiz.galleta@gmail.com>
+Date:   Wed Apr 3 16:15:27 2024 -0600
+
+    aterrizando los datos en el fpnc
+
+[33mcommit cd3d1908ebd0f586781acb7a67e739e9d246faa2[m
+Author: Arturo Resendiz <resendiz.galleta@gmail.com>
+Date:   Mon Apr 1 17:35:12 2024 -0600
+
+    FVU diseño completo
+
+[33mcommit b62bbbd0a2497399eafa59b35ab775d389f63c62[m
+Author: Arturo Resendiz <resendiz.galleta@gmail.com>
+Date:   Sat Mar 30 02:54:05 2024 -0600
+
+    continuando con la programacion de fpnc
+
+[33mcommit ab5b82ebb165938065b37b51b6cf8f0f70127ff4[m
+Author: Arturo Resendiz <resendiz.galleta@gmail.com>
+Date:   Sat Mar 30 02:29:36 2024 -0600
+
+    Comenzando con la programacion del formato de producto no conforme
+
+[33mcommit 834112b86967e15506a6941a4671f6313a3db49d[m
+Author: Arturo Resendiz <resendiz.galleta@gmail.com>
+Date:   Wed Mar 27 16:05:51 2024 -0600
+
+    Para enseñar
+
+[33mcommit de9e9340c154b1d849aaaef2825f3a3390ca6631[m
+Author: Arturo Resendiz <resendiz.galleta@gmail.com>
+Date:   Fri Mar 22 17:35:14 2024 -0600
+
+    rutas protegidas
+
+[33mcommit baccbdd156a106c79b5dbdd44fa2caf1319b83c2[m
+Author: Arturo Resendiz <resendiz.galleta@gmail.com>
+Date:   Thu Mar 21 17:43:37 2024 -0600
+
+    cuasiqueterminado
+
+[33mcommit 03f1dc06bf9d47108adc25e46c49d13fc97ef0f4[m
+Author: Arturo Resendiz <resendiz.galleta@gmail.com>
+Date:   Tue Mar 19 17:36:31 2024 -0600
+
+    Ya guarda comentarios de bascula y produccion
+
+[33mcommit a9c379472a610482bd9eb058907c94a2fab8c32c[m
+Author: Arturo Resendiz <resendiz.galleta@gmail.com>
+Date:   Fri Mar 15 17:22:34 2024 -0600
+
+    Me quede rellenando el formato lleno
+
+[33mcommit bd47981bc861cbaf37c27195afd6317baf5b9c6e[m
+Author: Arturo Resendiz <resendiz.galleta@gmail.com>
+Date:   Thu Mar 14 17:33:27 2024 -0600
+
+    falta checar lo de los folios
+
+[33mcommit 69f152586f78efbfcf9b3365895e99b9f8dce61c[m
+Author: Arturo Resendiz <resendiz.galleta@gmail.com>
+Date:   Thu Mar 14 13:47:10 2024 -0600
+
+    ya hace el CRUD de los usuarios
+
+[33mcommit 29a104640f5cb35bd176281d4d94654d4835ffdc[m
+Author: Arturo Resendiz <resendiz.galleta@gmail.com>
+Date:   Tue Mar 12 17:23:19 2024 -0600
+
+    consulta usuarios
+
+[33mcommit 67b1b0a673c63f69fbddb48aa4b819bb71cd9d3f[m
+Author: Arturo Resendiz <resendiz.galleta@gmail.com>
+Date:   Mon Mar 11 16:08:42 2024 -0600
+
+    migraciones hechas
+
+[33mcommit a871728971a95ae4502e9e8ce5f83b8c548d2adc[m
+Author: Arturo Resendiz <resendiz.galleta@gmail.com>
+Date:   Sat Mar 9 14:05:06 2024 -0600
+
+    inicio de programacion

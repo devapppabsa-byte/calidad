@@ -1,0 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+
+
+
+
+.scroll-estadisticas{
+    height: 350px;
+    overflow-x: auto;
+}
+
+.arvo {
+    font-family: "Arvo", serif;
+    font-weight: 30;
+    font-style: normal;
+  }
+
+
+.cascadia {
+    font-family: "Cascadia Code", sans-serif;
+    font-optical-sizing: auto;
+  }
+
+
+.dropdown-item:active,
+.dropdown-item:hover,
+.dropdown-item:focus{
+    background-color: black;
+    color: white;
+}
+
+.nav-item a{
+    color: black;
+ }
+
+ .nav-item a:hover{
+    background-color: black;
+    color: white;
+    transition: 0.1s;
+    
+ }
+
+
+ 
+ .select_busqueda {
+    height: calc(10.5em + .9rem + 8px);
+    /* padding: .375rem .75rem; */
+    font-size: 1rem;
+    line-height: 1.5;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    text-transform: uppercase;
+}
+
+
+.boton_flotante{
+    position: fixed; 
+    bottom: 20px;
+    right: -70px;
+    border: none;
+    font-weight:bold;
+    cursor: pointer;
+        
+}
+/* .boton_flotante:hover{
+    transform: scale(1.1); 
+    background-color: white;
+    color: black;
+    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.4);
+} */
+
+
+/* el boton de regresar con el color de pabsa */
+.pabsa-btn{
+    background-color: #FF5733;
+    color: white;
+    font-weight: bold;
+  }
+/* el boton de regresar con el color de pabsa */
+
+
+
+.centrar-verticalmente{
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    height: 100%;
+      
+}
+.centrar-horizontal{
+    display: flex;
+    align-items: center;
+    justify-content: flex-center;
+    width: 100%;
+}
+.fondo{
+    background-color: rgb(204, 218, 224);
+}
+/* .fondo-titulos{
+    background-color: rgba(229, 229, 229);
+} */
+small{
+    font-size: 0.8em;
+}
+
+.sombra{
+    box-shadow: 10px 10px 10px 10px rgba(0.3, 0.3, 0.3, 0.3);
+}
+body{
+    background-image: url(../img/fondo.jpg) ;
+    transition: 20s;
+    /* background-size: cover; */
+    background-repeat: repeat;
+    padding: 0;
+    /* text-transform: uppercase; */
+}
+
+
+.area-a-imprimir {
+    display: block; /* Asegura que el área sea visible durante la impresión */
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.centrar-verticalmente{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.menu{
+    height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.resizeable-div {
+    transition: all 0.3s ease;
+    background-color: white;
+}
+
+/* Estilo cuando el mouse pasa por encima */
+.resizeable-div:hover {
+    transform: scale(1.2); /* Hace el div 20% más grande */
+    background: url('../img/click.mp3') no-repeat;
+    background-color: white;
+}
+
+
+.resizeable-table{
+    transition: all 0.3s ease;
+    background-color: white;
+}
+.resizeable-table:hover{
+    background-color: #e9e7e7;
+    transform: scale(1.01); /* Hace el div 20% más grande */
+}
+
+a{
+    text-decoration: none;
+    color: black;
+}
+.tiempo{
+    transition: all 0.3s ease;
+}
+
+.fotos{
+    cursor: pointer;
+}
+
+
+/* Estilos personalizados */
+.table-coqueta {
+  background-color: #f8f9fa; /* Fondo gris claro */
+}
+
+.table-coqueta th,
+.table-coqueta td {
+  border-top: none; /* Eliminar la línea superior de las celdas */
+}
+
+.table-coqueta th {
+  border-bottom: 2px solid #e9ecef; /* Línea inferior */
+}
+
+.table-coqueta tbody tr:hover {
+  background-color: #e2e6ea; /* Cambio de color al pasar el ratón sobre la fila */
+}
+
+.scroll-tabla{
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+
+
+/* imprimiendo hoja */
+@media print {
+
+    body{
+        background: none !important;
+    }
+
+  }
+
+
+  #formloader{
+    margin-top: 20px;
+    text-align: center;
+    height: 500px;
+    width: 500px;
+  }
+
+  .form-sending{
+    opacity: .7;
+    pointer-events: none;
+  }
+
+

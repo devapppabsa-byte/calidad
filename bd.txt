@@ -1,0 +1,84 @@
+Tabla usuarios
+    -Nombre completo
+    -Correo electronico
+    -contraseña
+    -confirmar contraseña
+    -area
+    -planta
+
+
+
+Tabla FMP
+    -planta
+    -Folio
+    -Fecha
+    -Hora
+    -producto
+    -proveedor
+    -lote
+    -linea transportista
+    -operador
+    -placas torton
+    -placas caja
+    -hora entrada laboratorio
+    -hora liberacion
+    -humedad
+    -temperatura
+    -peso especifico
+    -grano dañado
+    -grano quebrado
+    -impurezas
+    -cantidad muestra
+    -bx
+    -plagas
+    -certificado plagas
+    -fluorecencia
+    -asegurado
+    -color y olor caracteristico
+    -equipo de muestreo
+    -materia extraña
+    -metodo de muestreo
+    -aceptado por concecion
+    -DWG micrones
+    -M10(%)
+    -M16(%)
+    -M18(%)
+    -F(%)
+    -Superviso muestreo
+    -Usuario que lleno el formato
+    -Dictamen Final
+    -Observaciones
+
+
+Tabla fomrato producto no conforme
+    -Fecha 
+    -Folio
+    -materia prima
+    -material de empaque
+    -producto terminado
+    -otros
+    -proveedor
+    -producto
+    -presentación
+    -lote
+    -cantidad
+    -desviacion
+    -foto1
+    -foto2
+    -foto3
+    -foto4
+    -foto5
+    -foto6
+    -Observaciones
+    -notificacion email
+    -notificacion telefonica
+    -notificacion otra
+    -quien recibe la notificacion 
+    -quien emite la notificacion
+
+
+Tabla administradores
+    -nombre completo
+    -correo electronico
+    -contraseña
+    -puesto

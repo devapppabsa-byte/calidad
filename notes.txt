@@ -1,0 +1,11 @@
+OBSERVACIONES APP CALIDAD
+10
+1.- LA LONGITUD DE LOS VALORES DE LA COLUMNA DE OBSERVACIONES EN LA BD TIENE QUE SER AUMENTADA.
+2.- DESPUES DE RELLENAR UN FPNC ME DIRIJE A LA TABLA Y AL HACER CLICK AL BOTON REGRESAR DEL 
+    NAVEGADOR ME VUELVE A MOSTRAR EL FORMULARIO DE PRODUCTO NO CONFORME (LO QUE NO DEBERIA YA QUE SOLO SE DEBE RELLENAR UNA VEZ).
+	se puede evitar poniendo en unique el folio y devolviendo un mensaje, aunque lo ideal es que ni siquiera se muestre 
+	el formulario.
+
+
+4.- AGREGAR EL PERFIL DE LOS USUARIOS DEL ALMACEN EN EL  FVU: El encargado de almacen debe tener un panel de control para vr los fomatos que se le estan enviano
+
