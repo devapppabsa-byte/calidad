@@ -1,7 +1,7 @@
 @extends('plantilla')
 @section('contenido')
 @section('title', 'FORMATOS GENERADOS')
-@include('assets.nav_user')
+@include('assets.nav')
 
 <div class="container bg-white mt-4 mb-3 sombra border border-5">
     <div class="row">

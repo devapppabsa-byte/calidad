@@ -28,7 +28,7 @@
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
   </div>
 
-  <div class="offcanvas-body">
+  <div class="offcanvas-body">      
     <!-- INICIO -->
     <a href="{{route('admin.view')}}" class="btn btn-light w-100 mb-2 text-start {{request()->routeIs('admin.view') ? 'active' : ''}}">
       <i class="fa fa-home me-2"></i> Inicio
@@ -130,7 +130,8 @@
                 </div>
                 <div class="col-12 text-center mt-0">
                     <form action="{{route('cerrar.sesion')}}" method="POST">
-                        <input type="hidden" name="_token" value="twaXzIAZWfmwOFQQA0OwG5KswUqyuAR9bLEXiiyP" autocomplete="off">                        <button class="btn btn-light btn-sm" type="submit">
+                        @csrf @method('POST')
+                        <button class="btn btn-light btn-sm" type="submit">
                             <i class="fa fa-power-off"></i>
                             Cerrar Sesión
                         </button>
