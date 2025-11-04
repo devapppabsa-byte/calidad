@@ -125,9 +125,6 @@
 
        <div class="col-sm-6 col-md-4 col-lg-2">
             <div class="row justify-content-center">
-                <div class="col-12 text-center mb-0">
-                    <h6>Bascula  <br> Planta 3 </h6>
-                </div>
                 <div class="col-12 text-center mt-0">
                     <form action="{{route('cerrar.sesion')}}" method="POST">
                         @csrf @method('POST')

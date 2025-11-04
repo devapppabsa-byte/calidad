@@ -150,6 +150,39 @@
 
             </div>
             </div>
+            @else
+
+            <div class="col-sm-6 col-md-4 col-lg-2 d-flex align-items-center text-center  ">
+                {{-- <img src="{{asset('img/logo.png')}}" class="img-fluid w-25 mx-auto" alt=""> <br> --}}
+                <a href="{{route('user.perfil')}}" class="text-dark text-center">
+                        <h3 class="mx-auto cascadia text-center">
+                            <i class="fa fa-flask"></i>
+                            QualiTrack
+                        </h3>
+                </a>
+            </div>
+
+            <div class="col-sm-12 col-md-12 col-lg-8 d-flex align-items-center">
+
+                <div class="col-11"></div>
+                <div class="col-sm-6 col-md-2 col-lg-2">
+                    <div class="row justify-content-center">
+                        <div class="col-12 text-center mb-0">
+                            <h6>
+                                {{Auth::user()->name}}  
+                            </h6>
+                        </div>
+                        <div class="col-12 text-center mt-0">
+                            <form action="{{route('cerrar.sesion')}}" method="POST">
+                                @csrf
+                                <button class="btn btn-light btn-sm border" type="submit">
+                                    <i class="fa fa-power-off"></i>
+                                    Cerrar Sesión
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+            </div>
 
             @endif
         

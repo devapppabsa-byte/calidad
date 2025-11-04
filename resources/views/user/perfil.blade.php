@@ -1,6 +1,7 @@
 @extends('plantilla')
 @section('contenido')
 @section('title', Auth::user()->nombre_completo )
+
 @if (Auth()->user()->area == 'CALIDAD')
     @include('assets.nav_user')
 @else
