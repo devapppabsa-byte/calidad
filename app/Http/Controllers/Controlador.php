@@ -266,7 +266,7 @@ class Controlador extends Controller
         $planta = Auth::user()->planta;
         $area = Auth::user()->area;
         $id_logeado = Auth::user()->id;
-        $usuarios_planta = DB::select("SELECT nombre_completo FROM USERS WHERE planta LIKE $planta AND area LIKE '$area' ");
+        $usuarios_planta = DB::select("SELECT nombre_completo FROM users WHERE planta LIKE $planta AND area LIKE '$area' ");
         //Obteniendo todos los usuario
 
         //Datos del proveedor//
@@ -911,7 +911,10 @@ class Controlador extends Controller
 
 
     public function fvu_pendientes(){
-        $fvu = DB::select("SELECT*FROM fvu WHERE verifico_almacen LIKE 'no_verificado' ORDER BY  updated_at DESC");
+
+
+        $planta = Auth::user()->planta;
+        $fvu = DB::select("SELECT*FROM fvu WHERE verifico_almacen LIKE 'no_verificado' AND  planta LIKE '$planta'  ORDER BY  updated_at DESC");
 
         return view('user.tabla_fvu_pendientes', compact('fvu'));
     }
