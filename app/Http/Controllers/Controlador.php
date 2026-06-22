@@ -72,15 +72,108 @@ class Controlador extends Controller
 
     public function showAdmin(){
 
-                
-        $proveedores = DB::select("SELECT proveedor, COUNT(*) AS repeticiones FROM fmp GROUP BY proveedor ORDER BY repeticiones DESC LIMIT 10 ");
+        $fecha_inicio = request('fecha_inicio');
+        $fecha_fin = request('fecha_fin');
 
-        $rechazados = DB::select("SELECT proveedor, COUNT(*) AS repeticiones FROM fmp WHERE dictamen_final LIKE 'RECHAZADO' GROUP BY proveedor ORDER BY repeticiones DESC LIMIT 10 ");
+        $where_fmp = '';
+        $where_fpnc = '';
+        $where_fvu = '';
+        $params_fmp = [];
+        $params_fpnc = [];
+        $params_fvu = [];
 
-        
+        if ($fecha_inicio && $fecha_fin) {
+            $where_fmp = " WHERE created_at >= ? AND created_at <= ? ";
+            $where_fpnc = " WHERE created_at >= ? AND created_at <= ? ";
+            $where_fvu = " WHERE created_at >= ? AND created_at <= ? ";
+            $params_fmp = [$fecha_inicio . ' 00:00:00', $fecha_fin . ' 23:59:59'];
+            $params_fpnc = [$fecha_inicio . ' 00:00:00', $fecha_fin . ' 23:59:59'];
+            $params_fvu = [$fecha_inicio . ' 00:00:00', $fecha_fin . ' 23:59:59'];
+        } elseif ($fecha_inicio) {
+            $where_fmp = " WHERE created_at >= ? ";
+            $where_fpnc = " WHERE created_at >= ? ";
+            $where_fvu = " WHERE created_at >= ? ";
+            $params_fmp = [$fecha_inicio . ' 00:00:00'];
+            $params_fpnc = [$fecha_inicio . ' 00:00:00'];
+            $params_fvu = [$fecha_inicio . ' 00:00:00'];
+        } elseif ($fecha_fin) {
+            $where_fmp = " WHERE created_at <= ? ";
+            $where_fpnc = " WHERE created_at <= ? ";
+            $where_fvu = " WHERE created_at <= ? ";
+            $params_fmp = [$fecha_fin . ' 23:59:59'];
+            $params_fpnc = [$fecha_fin . ' 23:59:59'];
+            $params_fvu = [$fecha_fin . ' 23:59:59'];
+        }
 
+        $where_and_fmp = $where_fmp ? str_replace('WHERE', 'AND', $where_fmp) : '';
+        $where_and_fpnc = $where_fpnc ? str_replace('WHERE', 'AND', $where_fpnc) : '';
+        $where_and_fvu = $where_fvu ? str_replace('WHERE', 'AND', $where_fvu) : '';
 
-        return view('admin.perfil', compact('proveedores', 'rechazados'));
+        $proveedores = DB::select("SELECT proveedor, COUNT(*) AS repeticiones FROM fmp$where_fmp GROUP BY proveedor ORDER BY repeticiones DESC LIMIT 10 ", $params_fmp);
+
+        $rechazados = DB::select("SELECT proveedor, COUNT(*) AS repeticiones FROM fmp WHERE dictamen_final LIKE 'RECHAZADO'$where_and_fmp GROUP BY proveedor ORDER BY repeticiones DESC LIMIT 10 ", $params_fmp);
+
+        $transportistas_fmp = DB::select("SELECT linea_transportista, COUNT(*) AS total FROM fmp$where_fmp GROUP BY linea_transportista ORDER BY total DESC LIMIT 10 ", $params_fmp);
+
+        $transportistas_fvu = DB::select("SELECT linea_transportista, COUNT(*) AS total FROM fvu$where_fvu GROUP BY linea_transportista ORDER BY total DESC LIMIT 10 ", $params_fvu);
+
+        $productos_top = DB::select("SELECT producto, COUNT(*) AS total FROM fmp$where_fmp GROUP BY producto ORDER BY total DESC LIMIT 10 ", $params_fmp);
+
+        $fmp_por_planta = DB::select("SELECT planta, COUNT(*) AS total FROM fmp$where_fmp GROUP BY planta ORDER BY planta ", $params_fmp);
+
+        $fvu_por_planta = DB::select("SELECT planta, COUNT(*) AS total FROM fvu$where_fvu GROUP BY planta ORDER BY planta ", $params_fvu);
+
+        $fpnc_por_planta = DB::select("SELECT SUBSTRING(folio_fmp, 3, 1) AS planta, COUNT(*) AS total FROM fpnc WHERE folio_fmp IS NOT NULL AND folio_fmp != ''$where_and_fpnc GROUP BY SUBSTRING(folio_fmp, 3, 1) ORDER BY planta ", $params_fpnc);
+
+        $dictamenes = DB::select("SELECT dictamen_final, COUNT(*) AS total FROM fmp$where_fmp GROUP BY dictamen_final ", $params_fmp);
+
+        $total_fmp = DB::select("SELECT COUNT(*) AS total FROM fmp$where_fmp ", $params_fmp)[0]->total;
+        $total_fpnc = DB::select("SELECT COUNT(*) AS total FROM fpnc$where_fpnc ", $params_fpnc)[0]->total;
+        $total_fvu = DB::select("SELECT COUNT(*) AS total FROM fvu$where_fvu ", $params_fvu)[0]->total;
+
+        $fvu_verificados = DB::select("SELECT verifico_almacen, COUNT(*) AS total FROM fvu$where_fvu GROUP BY verifico_almacen ", $params_fvu);
+
+        $fmp_por_mes = DB::select("
+            SELECT DATE_FORMAT(created_at, '%Y-%m') AS mes, COUNT(*) AS total
+            FROM fmp
+            WHERE created_at IS NOT NULL$where_and_fmp
+            GROUP BY mes
+            ORDER BY mes DESC
+            LIMIT 12
+        ", $params_fmp);
+
+        $fpnc_por_mes = DB::select("
+            SELECT DATE_FORMAT(created_at, '%Y-%m') AS mes, COUNT(*) AS total
+            FROM fpnc
+            WHERE created_at IS NOT NULL$where_and_fpnc
+            GROUP BY mes
+            ORDER BY mes DESC
+            LIMIT 12
+        ", $params_fpnc);
+
+        $fvu_por_mes = DB::select("
+            SELECT DATE_FORMAT(created_at, '%Y-%m') AS mes, COUNT(*) AS total
+            FROM fvu
+            WHERE created_at IS NOT NULL$where_and_fvu
+            GROUP BY mes
+            ORDER BY mes DESC
+            LIMIT 12
+        ", $params_fvu);
+
+        $usuarios_top = DB::select("SELECT usuario_logeado, COUNT(*) AS total FROM fmp$where_fmp GROUP BY usuario_logeado ORDER BY total DESC LIMIT 10 ", $params_fmp);
+
+        return view('admin.perfil', compact(
+            'proveedores', 'rechazados',
+            'transportistas_fmp', 'transportistas_fvu',
+            'productos_top',
+            'fmp_por_planta', 'fvu_por_planta', 'fpnc_por_planta',
+            'dictamenes',
+            'total_fmp', 'total_fpnc', 'total_fvu',
+            'fvu_verificados',
+            'fmp_por_mes', 'fpnc_por_mes', 'fvu_por_mes',
+            'usuarios_top',
+            'fecha_inicio', 'fecha_fin'
+        ));
     }
 
 
@@ -977,27 +1070,63 @@ class Controlador extends Controller
 
     public function user_perfil(){
 
+        $planta = Auth::user()->planta;
 
         //Obtiene el top de las materias primas mas recepcionadass
         $fmp_mas_recibidos = DB::table('fmp')
                             ->select('producto', DB::raw('COUNT(*) as cantidad'))
-                            ->where('planta', Auth::user()->planta)
+                            ->where('planta', $planta)
                             ->groupBy('producto')
                             ->orderByDesc('cantidad')
                             ->limit(20)
                             ->get();
 
-
         $hoy = Carbon::today();
         $limite = Carbon::today()->addDays(30);
-        $caducidades_proximas = Fmp::whereBetween('caducidad', [$hoy, $limite])->where('planta', Auth::user()->planta)->get();
+        $caducidades_proximas = Fmp::whereBetween('caducidad', [$hoy, $limite])->where('planta', $planta)->get();
 
         foreach($caducidades_proximas as $caducidad){
             $caducidad->fecha_larga = Carbon::parse($caducidad->caducidad)->locale('es')->translatedFormat('j \d\e F \d\e Y');
         }
 
+        // Mismas gráficas que admin pero filtradas por planta
+        $where_planta_fmp = " WHERE planta = ? ";
+        $where_planta_fvu = " WHERE planta = ? ";
+        $where_planta_fpnc = " WHERE SUBSTRING(folio_fmp, 3, 1) = ? ";
+        $params_fmp = [$planta];
+        $params_fvu = [$planta];
+        $params_fpnc = [(string)$planta];
 
-        return view('user.perfil', compact('fmp_mas_recibidos', 'caducidades_proximas'));
+        $proveedores = DB::select("SELECT proveedor, COUNT(*) AS repeticiones FROM fmp$where_planta_fmp GROUP BY proveedor ORDER BY repeticiones DESC LIMIT 10 ", $params_fmp);
+        $rechazados = DB::select("SELECT proveedor, COUNT(*) AS repeticiones FROM fmp WHERE dictamen_final LIKE 'RECHAZADO' AND planta = ? GROUP BY proveedor ORDER BY repeticiones DESC LIMIT 10 ", [$planta]);
+        $transportistas_fmp = DB::select("SELECT linea_transportista, COUNT(*) AS total FROM fmp$where_planta_fmp GROUP BY linea_transportista ORDER BY total DESC LIMIT 10 ", $params_fmp);
+        $transportistas_fvu = DB::select("SELECT linea_transportista, COUNT(*) AS total FROM fvu$where_planta_fvu GROUP BY linea_transportista ORDER BY total DESC LIMIT 10 ", $params_fvu);
+        $productos_top = DB::select("SELECT producto, COUNT(*) AS total FROM fmp$where_planta_fmp GROUP BY producto ORDER BY total DESC LIMIT 10 ", $params_fmp);
+        $dictamenes = DB::select("SELECT dictamen_final, COUNT(*) AS total FROM fmp$where_planta_fmp GROUP BY dictamen_final ", $params_fmp);
+
+        $total_fmp = DB::select("SELECT COUNT(*) AS total FROM fmp$where_planta_fmp ", $params_fmp)[0]->total;
+        $total_fpnc = DB::select("SELECT COUNT(*) AS total FROM fpnc$where_planta_fpnc ", $params_fpnc)[0]->total;
+        $total_fvu = DB::select("SELECT COUNT(*) AS total FROM fvu$where_planta_fvu ", $params_fvu)[0]->total;
+
+        $fvu_verificados = DB::select("SELECT verifico_almacen, COUNT(*) AS total FROM fvu$where_planta_fvu GROUP BY verifico_almacen ", $params_fvu);
+
+        $fmp_por_mes = DB::select("SELECT DATE_FORMAT(created_at, '%Y-%m') AS mes, COUNT(*) AS total FROM fmp WHERE created_at IS NOT NULL AND planta = ? GROUP BY mes ORDER BY mes DESC LIMIT 12 ", [$planta]);
+        $fpnc_por_mes = DB::select("SELECT DATE_FORMAT(fpnc.created_at, '%Y-%m') AS mes, COUNT(*) AS total FROM fpnc INNER JOIN fmp ON fpnc.folio_fmp = fmp.folio WHERE fmp.planta = ? AND fpnc.created_at IS NOT NULL GROUP BY mes ORDER BY mes DESC LIMIT 12 ", [$planta]);
+        $fvu_por_mes = DB::select("SELECT DATE_FORMAT(created_at, '%Y-%m') AS mes, COUNT(*) AS total FROM fvu WHERE created_at IS NOT NULL AND planta = ? GROUP BY mes ORDER BY mes DESC LIMIT 12 ", [$planta]);
+
+        $usuarios_top = DB::select("SELECT usuario_logeado, COUNT(*) AS total FROM fmp$where_planta_fmp GROUP BY usuario_logeado ORDER BY total DESC LIMIT 10 ", $params_fmp);
+
+        return view('user.perfil', compact(
+            'fmp_mas_recibidos', 'caducidades_proximas',
+            'proveedores', 'rechazados',
+            'transportistas_fmp', 'transportistas_fvu',
+            'productos_top',
+            'dictamenes',
+            'total_fmp', 'total_fpnc', 'total_fvu',
+            'fvu_verificados',
+            'fmp_por_mes', 'fpnc_por_mes', 'fvu_por_mes',
+            'usuarios_top'
+        ));
     }
 
 
