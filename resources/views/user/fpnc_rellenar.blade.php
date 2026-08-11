@@ -5,8 +5,6 @@
 
 
 
-
-
 <form action="{{route('fpnc.agregar')}}" id="form" enctype="multipart/form-data" method="POST">
 @csrf
 
@@ -38,6 +36,17 @@
         <h3>FORMATO</h3>
       </div>
       
+
+{{-- 
+      <div class="row">
+        <div class="col-5">
+            ia
+        </div>
+        <div class="col-7">
+            <span class="fw-bold">FO/GP/CC/001/001</span>
+      </div> --}}
+
+
       <div class="row">
             <span class="text-center mt-3">NOTIFICACIÓN DE PRODUCTO NO CONFORME</span>
       </div>

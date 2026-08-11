@@ -111,6 +111,10 @@ Route::get('/admin/datos/actulizar-encabezados', [encabezadosController::class, 
 
 //Rutas del usuario
 Route::get('/user', [Controlador::class, 'user_perfil'])->name('user.perfil')->middleware('auth');
+Route::get('/user/graficas', [Controlador::class, 'graficas'])->name('user.graficas')->middleware(['auth:web,adminis']);
+Route::get('/user/chat/view', [Controlador::class, 'chatView'])->name('user.chat.view')->middleware('auth');
+Route::post('/user/chat', [Controlador::class, 'chat'])->name('user.chat')->middleware('auth');
+Route::get('/user/chat/history', [Controlador::class, 'chatHistory'])->name('user.chat.history')->middleware('auth');
 
 
 //Rutas del formato de materia prima

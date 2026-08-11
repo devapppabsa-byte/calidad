@@ -22,9 +22,6 @@ class AppServiceProvider extends ServiceProvider
     {
     
         //con esta linea ayuda a que mis estillos se vean en ngrok y en local
-        if (str_contains(request()->getHost(), 'ngrok')) {
-            URL::forceScheme('https');
-        }
 
          if (app()->environment('production')) {
         URL::forceScheme('https');

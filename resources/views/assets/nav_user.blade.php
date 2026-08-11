@@ -73,6 +73,17 @@
                 <i class="fa fa-home me-2"></i> Inicio
                 </a>
 
+                <!-- GRÁFICAS -->
+                <a href="{{route('user.graficas')}}" class="btn btn-light w-100 mb-2 text-start {{request()->routeIs('user.graficas') ? 'active' : ''}}">
+                <i class="fa fa-chart-bar me-2"></i> Gráficas
+                </a>
+
+                {{-- CHAT IA (deshabilitado)
+                <a href="{{route('user.chat.view')}}" class="btn btn-light w-100 mb-2 text-start {{request()->routeIs('user.chat.view') ? 'active' : ''}}">
+                <i class="fa fa-robot me-2"></i> Chat IA
+                </a>
+                --}}
+
                 <!-- MATERIA PRIMA -->
                 <div class="dropdown w-100 mb-2">
                 <button class="btn btn-light w-100 text-start dropdown-toggle {{request()->routeIs('fmp.*') ? 'active' : ''}}" data-bs-toggle="dropdown">

@@ -8,11 +8,13 @@ use App\Models\Fvu;
 use App\Models\Fpnc;
 use App\Models\User;
 use App\Models\Producto;
+use App\Models\ChatMessage;
 use App\Models\Proveedor;
 use App\Models\Transportista;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpFoundation\Request;
 use App\Exports\FmpExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -297,7 +299,7 @@ class Controlador extends Controller
         
         //Obtenemos las contraseñas para ver si la cambio el usuario
         $id = request('id');
-        $password = DB::select("SELECT password FROM Users WHERE id = $id");
+        $password = DB::select("SELECT password FROM users WHERE id = $id");
 
 
         if(request('password') == $password[0]->password ){
@@ -1117,7 +1119,80 @@ class Controlador extends Controller
         $usuarios_top = DB::select("SELECT usuario_logeado, COUNT(*) AS total FROM fmp$where_planta_fmp GROUP BY usuario_logeado ORDER BY total DESC LIMIT 10 ", $params_fmp);
 
         return view('user.perfil', compact(
-            'fmp_mas_recibidos', 'caducidades_proximas',
+            'fmp_mas_recibidos', 'caducidades_proximas', 'total_fmp', 'total_fpnc', 'total_fvu', 'proveedores', 'rechazados', 'transportistas_fmp', 'transportistas_fvu', 'productos_top', 'dictamenes', 'fvu_verificados', 'fmp_por_mes', 'fpnc_por_mes', 'fvu_por_mes', 'usuarios_top'
+        ));
+    }
+
+    public function graficas(){
+        $isAdmin = Auth::guard('adminis')->user() !== null;
+
+        $fecha_inicio = request('fecha_inicio');
+        $fecha_fin = request('fecha_fin');
+
+        $where_fmp = '';
+        $where_fpnc = '';
+        $where_fvu = '';
+        $params_fmp = [];
+        $params_fpnc = [];
+        $params_fvu = [];
+
+        if ($isAdmin) {
+            if ($fecha_inicio && $fecha_fin) {
+                $where_fmp = " WHERE created_at >= ? AND created_at <= ? ";
+                $where_fpnc = " WHERE created_at >= ? AND created_at <= ? ";
+                $where_fvu = " WHERE created_at >= ? AND created_at <= ? ";
+                $params_fmp = [$fecha_inicio . ' 00:00:00', $fecha_fin . ' 23:59:59'];
+                $params_fpnc = [$fecha_inicio . ' 00:00:00', $fecha_fin . ' 23:59:59'];
+                $params_fvu = [$fecha_inicio . ' 00:00:00', $fecha_fin . ' 23:59:59'];
+            } elseif ($fecha_inicio) {
+                $where_fmp = " WHERE created_at >= ? ";
+                $where_fpnc = " WHERE created_at >= ? ";
+                $where_fvu = " WHERE created_at >= ? ";
+                $params_fmp = [$fecha_inicio . ' 00:00:00'];
+                $params_fpnc = [$fecha_inicio . ' 00:00:00'];
+                $params_fvu = [$fecha_inicio . ' 00:00:00'];
+            } elseif ($fecha_fin) {
+                $where_fmp = " WHERE created_at <= ? ";
+                $where_fpnc = " WHERE created_at <= ? ";
+                $where_fvu = " WHERE created_at <= ? ";
+                $params_fmp = [$fecha_fin . ' 23:59:59'];
+                $params_fpnc = [$fecha_fin . ' 23:59:59'];
+                $params_fvu = [$fecha_fin . ' 23:59:59'];
+            }
+        } else {
+            $planta = Auth::user()->planta;
+            $where_fmp = " WHERE planta = ? ";
+            $where_fpnc = " WHERE SUBSTRING(folio_fmp, 3, 1) = ? ";
+            $where_fvu = " WHERE planta = ? ";
+            $params_fmp = [$planta];
+            $params_fpnc = [(string)$planta];
+            $params_fvu = [$planta];
+        }
+
+        $where_and_fmp = $where_fmp ? str_replace('WHERE', 'AND', $where_fmp) : '';
+        $where_and_fpnc = $where_fpnc ? str_replace('WHERE', 'AND', $where_fpnc) : '';
+        $where_and_fvu = $where_fvu ? str_replace('WHERE', 'AND', $where_fvu) : '';
+
+        $proveedores = DB::select("SELECT proveedor, COUNT(*) AS repeticiones FROM fmp$where_fmp GROUP BY proveedor ORDER BY repeticiones DESC LIMIT 10 ", $params_fmp);
+        $rechazados = DB::select("SELECT proveedor, COUNT(*) AS repeticiones FROM fmp WHERE dictamen_final LIKE 'RECHAZADO'$where_and_fmp GROUP BY proveedor ORDER BY repeticiones DESC LIMIT 10 ", $params_fmp);
+        $transportistas_fmp = DB::select("SELECT linea_transportista, COUNT(*) AS total FROM fmp$where_fmp GROUP BY linea_transportista ORDER BY total DESC LIMIT 10 ", $params_fmp);
+        $transportistas_fvu = DB::select("SELECT linea_transportista, COUNT(*) AS total FROM fvu$where_fvu GROUP BY linea_transportista ORDER BY total DESC LIMIT 10 ", $params_fvu);
+        $productos_top = DB::select("SELECT producto, COUNT(*) AS total FROM fmp$where_fmp GROUP BY producto ORDER BY total DESC LIMIT 10 ", $params_fmp);
+        $dictamenes = DB::select("SELECT dictamen_final, COUNT(*) AS total FROM fmp$where_fmp GROUP BY dictamen_final ", $params_fmp);
+
+        $total_fmp = DB::select("SELECT COUNT(*) AS total FROM fmp$where_fmp ", $params_fmp)[0]->total;
+        $total_fpnc = DB::select("SELECT COUNT(*) AS total FROM fpnc$where_fpnc ", $params_fpnc)[0]->total;
+        $total_fvu = DB::select("SELECT COUNT(*) AS total FROM fvu$where_fvu ", $params_fvu)[0]->total;
+
+        $fvu_verificados = DB::select("SELECT verifico_almacen, COUNT(*) AS total FROM fvu$where_fvu GROUP BY verifico_almacen ", $params_fvu);
+
+        $fmp_por_mes = DB::select("SELECT DATE_FORMAT(created_at, '%Y-%m') AS mes, COUNT(*) AS total FROM fmp WHERE created_at IS NOT NULL$where_and_fmp GROUP BY mes ORDER BY mes DESC LIMIT 12 ", $params_fmp);
+        $fpnc_por_mes = DB::select("SELECT DATE_FORMAT(created_at, '%Y-%m') AS mes, COUNT(*) AS total FROM fpnc WHERE created_at IS NOT NULL$where_and_fpnc GROUP BY mes ORDER BY mes DESC LIMIT 12 ", $params_fpnc);
+        $fvu_por_mes = DB::select("SELECT DATE_FORMAT(created_at, '%Y-%m') AS mes, COUNT(*) AS total FROM fvu WHERE created_at IS NOT NULL$where_and_fvu GROUP BY mes ORDER BY mes DESC LIMIT 12 ", $params_fvu);
+
+        $usuarios_top = DB::select("SELECT usuario_logeado, COUNT(*) AS total FROM fmp$where_fmp GROUP BY usuario_logeado ORDER BY total DESC LIMIT 10 ", $params_fmp);
+
+        return view('user.graficas', compact(
             'proveedores', 'rechazados',
             'transportistas_fmp', 'transportistas_fvu',
             'productos_top',
@@ -1125,13 +1200,116 @@ class Controlador extends Controller
             'total_fmp', 'total_fpnc', 'total_fvu',
             'fvu_verificados',
             'fmp_por_mes', 'fpnc_por_mes', 'fvu_por_mes',
-            'usuarios_top'
+            'usuarios_top',
+            'fecha_inicio', 'fecha_fin'
         ));
     }
 
+    public function chatView(){
+        return view('user.chat');
+    }
 
+    public function chatHistory(){
+        $user = Auth::user();
+        $messages = ChatMessage::where('user_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->limit(50)
+            ->get(['role', 'message'])
+            ->reverse()
+            ->values();
 
+        return response()->json(['messages' => $messages]);
+    }
 
+    public function chat(){
+        $mensaje = request('mensaje');
+        if(!$mensaje){
+            return response()->json(['error' => 'Mensaje vacío'], 400);
+        }
+
+        $user = Auth::user();
+        $planta = $user->planta;
+
+        ChatMessage::create(['user_id' => $user->id, 'role' => 'user', 'message' => $mensaje]);
+
+        $fmps = DB::select("SELECT * FROM fmp WHERE planta = ? ORDER BY created_at DESC LIMIT 10 ", [$planta]);
+        $fpncs = DB::select("SELECT *FROM fpnc WHERE fpnc.planta = ? ORDER BY fpnc.created_at DESC LIMIT 10 ", [$planta]);
+        $fvus = DB::select("SELECT *FROM fvu WHERE planta = ? ORDER BY created_at DESC LIMIT 10 ", [$planta]);
+
+        $contexto = "Eres un asistente de calidad para la Planta $planta.\n\n debes responder siempre en español y llamando por su nombre a los usuarios $user->name.  no debes mostrar por ningun motivo tu razonamiento, solo debes responder de manera concisa y directa a la pregunta que te haga el usuario.  \n\n";
+
+        $contexto .= "FORMATOS FMP (Materia Prima):\n";
+        foreach($fmps as $i => $f){
+            $contexto .= ($i+1).". Folio: {$f->folio} | Fecha: {$f->fecha} {$f->hora_recepcion} | Producto: {$f->producto} | Proveedor: {$f->proveedor} | Lote: {$f->lote} | Cantidad: {$f->cantidad_recepcionada} {$f->unidad_medida} | Dictamen: {$f->dictamen_final} | Registró: {$f->usuario_logeado}";
+            if($f->humedad) $contexto .= " | Humedad: {$f->humedad}";
+            if($f->temperatura) $contexto .= " | Temp: {$f->temperatura}";
+            if($f->bx) $contexto .= " | BX: {$f->bx}";
+            if($f->observaciones_realizador) $contexto .= " | Obs: {$f->observaciones_realizador}";
+            $contexto .= "\n";
+        }
+
+        $contexto .= "\nFORMATOS FPNC (Producto No Conforme):\n";
+        foreach($fpncs as $i => $fp){
+            $contexto .= ($i+1).". Folio: {$fp->folio} | Fecha: {$fp->fecha} | FMP: {$fp->folio_fmp} | Producto: {$fp->producto} | Materia: {$fp->materia} | Proveedor: {$fp->proveedor} | Cantidad: {$fp->cantidad} | Obs: {$fp->observaciones} | Registró: {$fp->usuario_logeado}\n";
+        }
+
+        $contexto .= "\nFORMATOS FVU (Verificación de Unidades):\n";
+        foreach($fvus as $i => $fv){
+            $contexto .= ($i+1).". Folio: {$fv->folio} | Fecha: {$fv->fecha} {$fv->hora} | Propietario: {$fv->propietario} | Transportista: {$fv->linea_transportista} | Operador: {$fv->operador} | Placas: {$fv->placas_unidad} | Dictamen: {$fv->dictamen_final} | Verificó: {$fv->verifico_almacen} | Registró: {$fv->usuario_logeado}\n";
+        }
+
+        $contexto .= "\nResponde en español. Sé conciso y directo. Usa formato Markdown (listas con -, negritas con **, tablas, encabezadas con ##). No uses emojis ni caracteres especiales Unicode. No muestres tu razonamiento ni proceso de pensamiento, solo la respuesta final.";
+
+        $historial = ChatMessage::where('user_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get(['role', 'message'])
+            ->reverse()
+            ->values();
+
+        $messages = [['role' => 'system', 'content' => $contexto]];
+        foreach($historial as $h){
+            $messages[] = ['role' => $h->role, 'content' => $h->message];
+        }
+
+        try {
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . env('OPENROUTER_API_KEY'),
+                'Content-Type' => 'application/json',
+                'HTTP-Referer' => env('APP_URL', 'http://localhost'),
+            ])->timeout(120)->post('https://openrouter.ai/api/v1/chat/completions', [
+                'model' => env('OPENROUTER_MODEL'),
+                'messages' => $messages,
+                'temperature' => 0.7,
+                'max_tokens' => 1024,
+            ]);
+
+            \Log::info('CHAT API', [
+                'user' => $user->id,
+                'model' => env('OPENROUTER_MODEL'),
+                'messages_count' => count($messages),
+                'status' => $response->status(),
+            ]);
+
+            if($response->successful()){
+                $data = $response->json();
+                $reply = $data['choices'][0]['message']['content'] ?? 'Sin respuesta de la IA.';
+                $reply = preg_replace('/<think>.*?<think>/is', '', $reply);
+                $reply = preg_replace('/<reasoning>.*?<\/reasoning>/is', '', $reply);
+                $reply = preg_replace('/\*\*Paso \d+:.*?\*\*/s', '', $reply);
+                $reply = preg_replace('/Let me (think|analyze|consider|break down).*?\n/is', '', $reply);
+                $reply = trim($reply);
+                ChatMessage::create(['user_id' => $user->id, 'role' => 'assistant', 'message' => $reply]);
+                return response()->json(['reply' => $reply]);
+            }
+
+            \Log::error('CHAT API ERROR', ['body' => $response->body()]);
+            return response()->json(['error' => 'Error de la API: ' . $response->body()], 500);
+        } catch(\Exception $e){
+            \Log::error('CHAT EXCEPTION', ['msg' => $e->getMessage()]);
+            return response()->json(['error' => 'Error de conexión: ' . $e->getMessage()], 500);
+        }
+    }
 
 
 
