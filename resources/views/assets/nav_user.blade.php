@@ -78,11 +78,11 @@
                 <i class="fa fa-chart-bar me-2"></i> Gráficas
                 </a>
 
-                {{-- CHAT IA (deshabilitado)
+                <!-- CHAT IA -->
                 <a href="{{route('user.chat.view')}}" class="btn btn-light w-100 mb-2 text-start {{request()->routeIs('user.chat.view') ? 'active' : ''}}">
                 <i class="fa fa-robot me-2"></i> Chat IA
                 </a>
-                --}}
+            
 
                 <!-- MATERIA PRIMA -->
                 <div class="dropdown w-100 mb-2">

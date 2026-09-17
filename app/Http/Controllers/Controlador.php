@@ -1258,7 +1258,7 @@ class Controlador extends Controller
             $contexto .= ($i+1).". Folio: {$fv->folio} | Fecha: {$fv->fecha} {$fv->hora} | Propietario: {$fv->propietario} | Transportista: {$fv->linea_transportista} | Operador: {$fv->operador} | Placas: {$fv->placas_unidad} | Dictamen: {$fv->dictamen_final} | Verificó: {$fv->verifico_almacen} | Registró: {$fv->usuario_logeado}\n";
         }
 
-        $contexto .= "\nResponde en español. Sé conciso y directo. Usa formato Markdown (listas con -, negritas con **, tablas, encabezadas con ##). No uses emojis ni caracteres especiales Unicode. No muestres tu razonamiento ni proceso de pensamiento, solo la respuesta final.";
+        $contexto .= "\nINSTRUCCIONES ESTRICTAS:\n- Responde SIEMPRE en español.\n- PROHIBIDO usar emojis, símbolos o caracteres especiales Unicode.\n- Formatea SIEMPRE con Markdown: listas con -, negritas con **, tablas, encabezados con ##.\n- No muestres razonamiento ni proceso de pensamiento, solo la respuesta final.";
 
         $historial = ChatMessage::where('user_id', $user->id)
             ->orderBy('created_at', 'desc')
@@ -1298,6 +1298,8 @@ class Controlador extends Controller
                 $reply = preg_replace('/<reasoning>.*?<\/reasoning>/is', '', $reply);
                 $reply = preg_replace('/\*\*Paso \d+:.*?\*\*/s', '', $reply);
                 $reply = preg_replace('/Let me (think|analyze|consider|break down).*?\n/is', '', $reply);
+                $reply = trim($reply);
+                $reply = preg_replace('/[\x{1F300}-\x{1F9FF}\x{2600}-\x{26FF}\x{2700}-\x{27BF}\x{1FA00}-\x{1FAFF}\x{2190}-\x{21FF}\x{2B00}-\x{2BFF}\x{1F1E6}-\x{1F1FF}\x{FE00}-\x{FE0F}\x{200D}\x{20E3}]/u', '', $reply);
                 $reply = trim($reply);
                 ChatMessage::create(['user_id' => $user->id, 'role' => 'assistant', 'message' => $reply]);
                 return response()->json(['reply' => $reply]);
