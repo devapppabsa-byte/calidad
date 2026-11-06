@@ -98,9 +98,10 @@ Route::get('/admin/datos/proveedores-estadisticas',[ estadisticasController::cla
 
 
 
-//Rutas de la actualizacion de los  encabezados 
+//Rutas de la actualizacion de los  encabezados (solo admin)
 
-Route::get('/admin/datos/actulizar-encabezados', [encabezadosController::class, 'inicio'])->name('actualizar.encabezados');
+Route::get('/admin/datos/actulizar-encabezados', [encabezadosController::class, 'inicio'])->name('actualizar.encabezados')->middleware('auth:adminis');
+Route::patch('/admin/datos/actulizar-encabezados/{formato}', [encabezadosController::class, 'update'])->name('encabezados.update')->middleware('auth:adminis');
 //Rutas de la actualizacion de los  encabezados 
 
 
@@ -125,7 +126,7 @@ Route::get('/user/fmp/generados', [Controlador::class, 'fmp_generados'])->name('
 Route::get('/fmp/generados/{fmp}/llenos', [Controlador::class, 'fmp_lleno'])->name('fmp.lleno');
 Route::get('/user/fmp_pendientes_revisar', [Controlador::class, 'pendientes_revisar'])->name('pendientes.revisar')->middleware('auth');
 Route::get('/user/fmp_pendientes_revisar/{fmp}/fmp', [Controlador::class, 'fmp_revisar'])->name('fmp.revisar')->middleware('auth');
-Route::patch('/user/fmp_pendientes_revisar/{fmp}/fmp/revisado', [Controlador::class, 'fmp_revisado'])->name('fmp.revisado');
+Route::patch('/user/fmp_pendientes_revisar/{fmp}/fmp/revisado', [Controlador::class, 'fmp_revisado'])->name('fmp.revisado')->middleware('auth');
 //Rutas del formato de materia prima
 
 

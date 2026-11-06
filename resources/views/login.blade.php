@@ -23,8 +23,8 @@
 
 <form action="{{route('login.intro')}}" method="POST" id="login_form">
     @csrf
-
-                <div class="row justify-content-center mt-3">
+    
+    <div class="row justify-content-center mt-3">
                     <div class="col-sm-12 col-md-9 col-lg-9">
                         <div class="input-group">
                             <div class="input-group-icon">

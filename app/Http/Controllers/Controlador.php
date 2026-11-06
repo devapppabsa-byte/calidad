@@ -531,19 +531,22 @@ class Controlador extends Controller
 
 
 
+    private function columnasRevision($area)
+    {
+        $mapa = [
+            'PRODUCCION' => ['reviso_produccion', 'observaciones_produccion'],
+            'BASCULA' => ['reviso_bascula', 'observaciones_bascula'],
+            'ALMACEN MP' => ['reviso_almacen', 'observaciones_almacen'],
+        ];
+
+        return $mapa[$area] ?? null;
+    }
 
 
     public function pendientes_revisar(){
 
         $area = Auth::user()->area;
         $planta = Auth::user()->planta;
-
-        if($area == 'PRODUCCION'){
-            $reviso = 'reviso_produccion';
-        }
-        if($area == 'BASCULA'){
-            $reviso = 'reviso_bascula';
-        }
 
         if($area == 'CALIDAD'){
             Session::flush(); //Manda alv la session
@@ -552,12 +555,15 @@ class Controlador extends Controller
             
         }
 
+        $columnas = $this->columnasRevision($area);
 
+        if(!$columnas){
+            abort(403, 'No tienes permiso para revisar formatos.');
+        }
 
+        $reviso = $columnas[0];
 
-
-
-        $pendientes = DB::select("SELECT*FROM fmp WHERE planta=$planta ORDER BY  created_at DESC ");
+        $pendientes = DB::select("SELECT*FROM fmp WHERE planta=? ORDER BY  created_at DESC ", [$planta]);
 
    
         return view('user.tabla_fmp_por_revisar', compact('pendientes', 'reviso'));
@@ -569,20 +575,9 @@ class Controlador extends Controller
 
 
 
-
     public function  fmp_revisar(Fmp $fmp){
 
         $area = Auth::user()->area;
-
-        if($area == 'PRODUCCION'){
-            $reviso = 'reviso_produccion';
-            $observaciones = 'observaciones_produccion';
-        }
-
-        if($area == 'BASCULA'){
-            $reviso = 'reviso_bascula';
-            $observaciones = 'observaciones_bascula';
-        }
 
         if($area == 'CALIDAD'){
             Session::flush(); //Manda alv la session
@@ -591,7 +586,14 @@ class Controlador extends Controller
     
         }
 
- 
+        $columnas = $this->columnasRevision($area);
+
+        if(!$columnas){
+            abort(403, 'No tienes permiso para revisar formatos.');
+        }
+
+        $reviso = $columnas[0];
+        $observaciones = $columnas[1];
 
         return view('user.fmp_por_revisar', compact('fmp', 'reviso', 'observaciones'));
 
@@ -601,15 +603,25 @@ class Controlador extends Controller
 
 
 
-
     public function fmp_revisado(Fmp $fmp){
 
+        $area = Auth::user()->area;
 
+        if($area == 'CALIDAD'){
+            Session::flush(); //Manda alv la session
+            Auth::logout();
+            return redirect()->route('login');
+        }
 
+        $columnas = $this->columnasRevision($area);
+
+        if(!$columnas){
+            abort(403, 'No tienes permiso para confirmar formatos.');
+        }
 
         $fmp->update([
-            request('reviso') => request('usuario'),
-            request('observaciones_area') => request('observaciones'),
+            $columnas[0] => Auth::user()->nombre_completo,
+            $columnas[1] => request('observaciones'),
         ]);
 
         return redirect()->route('pendientes.revisar')->with('revisado', 'El documento se guardo con exito');

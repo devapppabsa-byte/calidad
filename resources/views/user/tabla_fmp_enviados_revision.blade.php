@@ -64,6 +64,14 @@
                                     <i class="fa fa-clock  mx-2"></i> </span>
                                 @endif
                             </div>
+                            <div class="col-3 text-center">
+                                <span>Almacén: 
+                                @if ($formato->reviso_almacen)
+                                    <i class="fa fa-check  mx-2"></i> </span>
+                                @elseif ($formato->reviso_almacen=='')
+                                    <i class="fa fa-clock mx-2"></i> </span>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>

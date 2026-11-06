@@ -140,6 +140,22 @@
             </div>
         @endif
 
+        @if (Auth::user()->area == 'ALMACEN MP')
+            <div class="col-sm-12 col-md-3 mt-1 col-lg-3 sombra btn resizeable-div border border-5 mt-5">
+                <div class="row d-flex align-items-center">
+                    <a href="{{route('pendientes.revisar')}}">
+                        <div class="col-12">
+                            <p class="mx-auto h5">FORMATOS POR REVISAR</p>
+                        </div>
+                        <div class="col-12">
+                            <small>SON LOS FORMATOS QUE AÚN NO HAZ REVISADO</small> <br>
+                            <i class="fa fa-eye mt-3 fa-2x"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        @endif
+
         @if (Auth::user()->area == 'ALMACEN MP' || Auth::user()->area == 'RECEPCIONES')
             <div class="col-sm-12 col-md-3 mt-1 col-lg-3 sombra btn resizeable-div  border border-5 mt-5">
                 <a href="{{route('fmp.generados')}}">

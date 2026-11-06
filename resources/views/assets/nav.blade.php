@@ -94,6 +94,7 @@
       </button>
       <ul class="dropdown-menu w-100">
         <li><a class="dropdown-item" href="{{route('datos.admin')}}"><i class="fa fa-box me-2"></i>Proveedores, Productos, Etc.</a></li>
+        <li><a class="dropdown-item" href="{{route('actualizar.encabezados')}}"><i class="fa fa-heading me-2"></i>Editar encabezados</a></li>
       </ul>
     </div>
 

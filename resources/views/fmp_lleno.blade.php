@@ -26,48 +26,7 @@
 <div class="container bg-white  p-5 sombra" id="contenedor_print"> <!--Contenedor de todo -->
 
 <!-- encabezado -->
-
-<div class="container shadow shadow-sm">
-  <div class="row border border-5">
-    
-    <div class="col-sm-12 col-md-4  col-lg-4 centrar-verticalmente p-2 mt-2">
-      <img src="{{asset('img/logo.png')}}" class="mx-auto img-fluid" alt="">
-    </div>
-    
-    <div class="col-sm-12 col-md-4 col-lg-4 border mt-2"> 
-      <div class="row text-center border">
-        <h3>FORMATO</h3>
-      </div>
-      
-      <div class="row">
-            <span class="text-center">RECEPCIÓN DE MATERIA PRIMA Y MATERIAL DE EMPAQUE</span>
-      </div>
-    </div>
-
-    <div class=" col-sm-12 col-md-4 col-lg-4 border mt-2">
-      <div class="row">
-        <div class="col-sm-6 col-md-4 col-lg-4 border fw-bold text-center">Codigo</div>
-        <div class="col-sm-6 col-md-8 col-lg-8 border p-0 text-center" >FO/GP/CC/070/01</div>
-      </div>
-      <div class="row">
-        <div class="col-sm-6 col-md-4 col-lg-4 border fw-bold text-center">Versión</div>
-        <div class="col-sm-6 col-md-8 col-lg-8 border p-0 text-center" >03</div>
-      </div>
-      <div class="row">
-        <div class="col-sm-6 col-md-4 col-lg-4 border fw-bold text-center">Vigencia</div>
-        <div class="col-sm-6 col-md-8 col-lg-8 border p-0 text-center" >
-          AGOSTO 2023</div>
-      </div>
-      <div class="row">
-        <div class="col-sm-6 col-md-4 col-lg-4 border fw-bold text-center">Pagina</div>
-        <div class="col-sm-6 col-md-8 col-lg-8 border p-0 text-center" >1 de 1</div>
-      </div>
-
-    </div>
-  
-  </div>
-</div>
-<!-- encabezado -->
+@include('assets.encabezado', ['formato' => 'fmp'])
     
 
 <!-- datos del formato -->
@@ -957,6 +916,28 @@
             <div class="col-12 text-white text-center bg-success">
               <i class="fa fa-circle-check mt-3"></i> 
               <h6> <b> REVISO:</b> {{$fmp->reviso_produccion}} </h6>
+            </div>
+          @else
+            <div class="col-12 text-white text-center bg-secondary">
+              <i class="fa fa-eye mt-3"></i> 
+              <h6> FALTA POR REVISAR</h6>
+            </div>     
+          @endif
+
+        </div>
+      </div>
+
+
+      <div class="col-sm-12 col-md-12 col-lg-3">
+        <div class="row">
+          <div class="col-12 text-center">
+            <h3>ALMACÉN</h3>
+          </div>
+
+          @if ($fmp->reviso_almacen)
+            <div class="col-12 text-white text-center bg-success">
+              <i class="fa fa-circle-check mt-3"></i> 
+              <h6> <b> REVISO:</b> {{$fmp->reviso_almacen}} </h6>
             </div>
           @else
             <div class="col-12 text-white text-center bg-secondary">

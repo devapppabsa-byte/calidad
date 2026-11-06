@@ -10,58 +10,13 @@
 <div class="container bg-white  p-5 sombra"> <!--Contenedor de todo -->
 
 <!-- encabezado -->
-
-<div class="container shadow shadow-sm">
-  <div class="row border border-5">
-    
-    <div class="col-sm-12 col-md-3  col-lg-4 centrar-verticalmente p-2 mt-2">
-      <img src="{{asset('img/logo.png')}}" class="mx-auto img-fluid" alt="">
-    </div>
-    
-    <div class="col-sm-12 col-md-4 col-lg-4 border mt-2"> 
-
-      <div class="row text-center border">
-        <h3>FORMATO</h3>
-      </div>
-      
-      <div class="row">
-            <span class="text-center">RECEPCIÓN DE MATERIA PRIMA Y MATERIAL DE EMPAQUE</span>
-      </div>
-
-    </div>
-
-    <div class=" col-sm-12 col-md-5 col-lg-4 border mt-2">
-      <div class="row">
-        <div class="col-sm-6 col-md-4 col-lg-4 border fw-bold text-center">Codigo</div>
-        <div class="col-sm-6 col-md-8 col-lg-8 border p-0 text-center" >FO/GP/CC/070/01</div>
-      </div>
-      <div class="row">
-        <div class="col-sm-6 col-md-4 col-lg-4 border fw-bold text-center">Versión</div>
-        <div class="col-sm-6 col-md-8 col-lg-8 border p-0 text-center" >03</div>
-      </div>
-      <div class="row">
-        <div class="col-sm-6 col-md-4 col-lg-4 border fw-bold text-center">Vigencia</div>
-        <div class="col-sm-6 col-md-8 col-lg-8 border p-0 text-center" >
-          AGOSTO 2023</div>
-      </div>
-      <div class="row">
-        <div class="col-sm-6 col-md-4 col-lg-4 border fw-bold text-center">Pagina</div>
-        <div class="col-sm-6 col-md-8 col-lg-8 border p-0 text-center" >1 de 4</div>
-      </div>
-
-    </div>
-  
-  </div>
-</div>
-<!-- encabezado -->
-    
+@include('assets.encabezado', ['formato' => 'fmp', 'pagina' => '1 de 4'])    
 
 <!-- datos del formato -->
 <div class="container">
   <div class="row mt-3 p-4 justify-content-center shadow shadow-sm">
 
   <div class="col-sm-12 col-md-5 col-lg-5 border">
-
       <div class="row">
         <div class="col-auto mt-1">
           <span class="centrar-verticalmente h6">Planta:</span>
@@ -79,8 +34,12 @@
           <span class="font-weight-bold">{{$fmp->fecha}}</span>
         </div>
     </div>
-
   </div>
+
+
+
+  
+
 
 
     <div class="col-sm-12 col-md-2 col-lg-2 my-3 "></div>     <!-- Este es para que se quede el espacio en blando entre las dos tablas de datos -->

@@ -1,7 +1,7 @@
 @extends('plantilla')
 @section('contenido')
 @include('assets.nav')
-@section('title', 'FO/GP/CC/070/05')
+@section('title', \App\Models\Encabezado::de('fvu')->codigo)
     
 
 {{-- boton de regresar --}}
@@ -20,47 +20,7 @@
         <div class="container bg-white p-5 sombra mt-2">
 
             <!-- encabezado -->
-            <div class="container shadow shadow-sm bg-white">
-                <div class="row border border-5">
-                
-                <div class="col-sm-12 col-md-4  col-lg-4 centrar-verticalmente p-2 mt-2">
-                    <img src="{{asset('img/logo.png')}}" class="mx-auto img-fluid" alt="">
-                </div>
-                
-                <div class="col-sm-12 col-md-4 col-lg-4 border mt-2"> 
-                    <div class="row text-center border">
-                    <h3>FORMATO</h3>
-                    </div>
-                    
-                    <div class="row d-flex align-items-center">
-                        <span class="text-center mt-3">VERIFICACIÓN DE UNIDADES</span>
-                    </div>
-                </div>
-            
-                <div class=" col-sm-12 col-md-4 col-lg-4 border mt-2">
-                    <div class="row">
-                    <div class="col-sm-6 col-md-4 col-lg-4 border fw-bold text-center">Codigo</div>
-                    <div class="col-sm-6 col-md-8 col-lg-8 border p-0 text-center" >FO/GP/CC/070/05</div>
-                    </div>
-                    <div class="row">
-                    <div class="col-sm-6 col-md-4 col-lg-4 border fw-bold text-center">Versión</div>
-                    <div class="col-sm-6 col-md-8 col-lg-8 border p-0 text-center" >03</div>
-                    </div>
-                    <div class="row">
-                    <div class="col-sm-6 col-md-4 col-lg-4 border fw-bold text-center">Vigencia</div>
-                    <div class="col-sm-6 col-md-8 col-lg-8 border p-0 text-center" >
-                        AGOSTO 2023</div>
-                    </div>
-                    <div class="row">
-                    <div class="col-sm-6 col-md-4 col-lg-4 border fw-bold text-center">Pagina</div>
-                    <div class="col-sm-6 col-md-8 col-lg-8 border p-0 text-center" >1 de 4</div>
-                    </div>
-            
-                </div>
-                
-                </div>
-            </div>
-            <!-- encabezado -->
+            @include('assets.encabezado', ['formato' => 'fvu', 'pagina' => '1 de 4'])
             
             
             
